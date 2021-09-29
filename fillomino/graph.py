@@ -289,7 +289,7 @@ class graph:
             bool: 変更があればTrue
         """
         result = False
-        nodes = [  # 0以上の数値を持つノード一覧
+        nodes = [  # 0より大きい数値を持つノード一覧
             n for n, d in self.G.nodes(data=True)
             if not d[AK_SKIP] and d[AK_NUMBER] > 0
         ]
