@@ -103,7 +103,7 @@ class zero_and_single_number_graph(graph):
             self._num = None
         elif len(nums) == 1:
             # 数値があれば保存する
-            self._num = nums[0]
+            self._num = list(nums)[0]
         else:
             # 0 しかない場合
             self._num = 0
