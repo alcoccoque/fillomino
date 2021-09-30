@@ -85,7 +85,7 @@ class zero_and_single_number_graph(graph):
         return result
 
     def solve(self) -> bool:
-        """1種類の0以外の数値と0を持つ連結なグラフの検証
+        """1種類の0以外の数値と0を持つ連結なグラフを解く
 
         Returns:
             bool: 変更があればTrue
