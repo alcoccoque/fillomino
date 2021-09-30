@@ -16,8 +16,17 @@ PUZZLE_FILE = 'puzzle.json'
 
 
 def read_puzzles(file: str = PUZZLE_FILE):
+    """ファイルからパズルデータを読み込む
+
+    Args:
+        file (str, optional): ファイル名. Defaults to PUZZLE_FILE.
+
+    Returns:
+        Any: JSONオブジェクト
+    """
     with open(file, 'r', encoding='utf-8') as f:
         text = f.read()
+    # コメントを削除する
     text_wo_comment = re.sub(r'/\*[\s\S]*?\*/|//.*', '', text)
     jobj = json.loads(text_wo_comment)
     return jobj
