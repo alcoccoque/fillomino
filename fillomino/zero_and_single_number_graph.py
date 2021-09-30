@@ -3,9 +3,10 @@
 # Copyright 2021 hirmiura <https://github.com/hirmiura>
 from __future__ import annotations
 
+from dataclasses import dataclass
 from itertools import chain, combinations
-from typing import Union
 from math import comb
+from typing import Union
 
 import networkx as nx
 
@@ -13,9 +14,20 @@ from .graph import graph
 from .label import AK_DENYS, AK_NUMBER
 
 
+@dataclass
 class zero_and_single_number_graph(graph):
     """0と1種類の数値を持つグラフ
     """
+
+    _num: int = None
+
+    def __post_init__(self):
+        self._validated = None
+        self.validate()
+
+    @property
+    def number(self):
+        return self._num
 
     @classmethod
     def create(cls, origin: Union[nx.Graph, graph]) -> dict[int, list[zero_and_single_number_graph]]:
@@ -67,21 +79,36 @@ class zero_and_single_number_graph(graph):
                     result[num].append(fog)
         return result
 
-    def validate(self) -> bool:
+    def validate(self, force: bool = False) -> bool:
         """グラフが正しいか検証する
+
+        Args:
+            force (bool, optional): 再計算を強制するか. Defaults to False.
 
         Returns:
             bool: 正しければTrue
         """
         assert self.G is not None
+        if not force and self._validated is not None:
+            # forceフラグがなく、計算済みであれば保存済みの結果を返す
+            return self._validated
         result = True
         nums_dict = dict(self.G.nodes.data(AK_NUMBER, 0))
         nums = set(nums_dict.values())
         if 0 in nums:  # 0を消す
             nums.remove(0)
-        # 集合が2より大きければ複数の数値を持つのでNG
         if len(nums) > 1:
+            # 集合が2より大きければ複数の数値を持つのでNG
             result = False
+            self._num = None
+        elif len(nums) == 1:
+            # 数値があれば保存する
+            self._num = nums[0]
+        else:
+            # 0 しかない場合
+            self._num = 0
+        # フラグを保存しておく
+        self._validated = result
         return result
 
     def solve(self) -> bool:
