@@ -4,25 +4,28 @@
 from __future__ import annotations
 
 import io
+import json
+import re
 import sys
 
 from matplotlib import pyplot as plt
 
 import fillomino as fo
 
+PUZZLE_FILE = 'puzzle.json'
+
+
+def read_puzzles(file: str = PUZZLE_FILE):
+    with open(file, 'r', encoding='utf-8') as f:
+        text = f.read()
+    text_wo_comment = re.sub(r'/\*[\s\S]*?\*/|//.*', '', text)
+    jobj = json.loads(text_wo_comment)
+    return jobj
+
 
 def main():
-    fomatrix = [
-        [0, 2, 2, 0, 6, 6, 0, 6, 2, 0],
-        [6, 0, 0, 2, 0, 0, 2, 0, 0, 5],
-        [6, 0, 0, 6, 0, 0, 3, 0, 0, 5],
-        [0, 3, 6, 0, 2, 1, 0, 1, 6, 0],
-        [1, 0, 0, 6, 0, 0, 4, 0, 0, 5],
-        [3, 0, 0, 2, 0, 0, 4, 0, 0, 5],
-        [0, 3, 2, 0, 4, 6, 0, 4, 4, 0],
-        [2, 0, 0, 1, 0, 0, 6, 0, 0, 2],
-        [4, 0, 0, 4, 0, 0, 4, 0, 0, 2],
-        [0, 1, 4, 0, 4, 3, 0, 3, 4, 0]]
+    puzzles = read_puzzles()
+    fomatrix = puzzles[1]
     fomg = fo.master_graph(len(fomatrix), len(fomatrix[0]))
     fomg.set_numbers(fomatrix)
     fomg.check_puzzled_out_subgraph()
