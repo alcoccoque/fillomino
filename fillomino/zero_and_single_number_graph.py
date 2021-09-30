@@ -174,13 +174,11 @@ class zero_and_single_number_graph(graph):
         """
         result = False
         G = self.G
-        num_nodes = [
-            n for n, d in G.nodes.data()
-            if d[AK_NUMBER] != 0
-        ]
+        num_nodes = graph.get_nodes_by_num(G, self.number)
         num = G.nodes[num_nodes[0]][AK_NUMBER]
         if num < 4:  # 4未満は却下
             return result
+        # 数値のみ(0も除く)のグラフ
         foSG = zero_and_single_number_graph(G.subgraph(num_nodes))
         SGs = foSG.get_connected_subgraphs()
         nodes_group = []
