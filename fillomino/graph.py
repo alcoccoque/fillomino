@@ -531,3 +531,16 @@ class graph:
         result |= self.check_other_number_wall()
         result |= self.check_same_number_around_zero()
         return result
+
+    def solve_pseudo_leaves(self) -> bool:
+        result = False
+        from .zero_and_single_number_graph import zero_and_single_number_graph
+        fogdic = zero_and_single_number_graph.create(self)
+        for num, fogl in fogdic.items():
+            if num < 4:
+                continue
+            for fog in fogl:
+                if fog.solve_leaves():
+                    result = True
+                    fog.upload(self)
+        return result

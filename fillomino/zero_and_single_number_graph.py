@@ -199,3 +199,10 @@ class zero_and_single_number_graph(graph):
             result |= nodes_group_dict[tuple(ng)].solve_comb()
             nodes_group_dict[tuple(ng)].upload(G)
         return result
+
+    def solve_leaves(self) -> bool:
+        """葉ノードグラフを検証する
+        """
+        result = False
+        result |= self.check_leaf_graphs()
+        return result
