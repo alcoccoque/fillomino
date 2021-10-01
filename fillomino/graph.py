@@ -507,7 +507,7 @@ class graph:
         fogdic = zero_and_single_number_graph.create(self)
         for fogl in fogdic.values():
             for fog in fogl:
-                if fog.solve():
+                if fog.solve_comb():
                     result = True
                     fog.upload(self)
         return result

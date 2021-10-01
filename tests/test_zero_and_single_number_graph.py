@@ -67,7 +67,7 @@ class Test_zero_and_single_number_graph(object):
         # mg.draw()
         gdic = fo.zero_and_single_number_graph.create(mg)
         zsg = gdic[6][0]
-        assert zsg.solve()
+        assert zsg.solve_comb()
         assert zsg.G.nodes[1, 1][AK_NUMBER] == 6
         assert zsg.G.nodes[1, 2][AK_NUMBER] == 6
         # zsg.draw()
