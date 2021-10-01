@@ -196,6 +196,6 @@ class zero_and_single_number_graph(graph):
                 for sp in spd.values():
                     node_set.update(sp)
             nodes_group_dict[tuple(ng)] = zero_and_single_number_graph(G.subgraph(node_set))
-            result |= nodes_group_dict[tuple(ng)].solve()
+            result |= nodes_group_dict[tuple(ng)].solve_comb()
             nodes_group_dict[tuple(ng)].upload(G)
         return result
