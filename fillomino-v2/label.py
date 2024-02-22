@@ -1,0 +1,7 @@
+LABEL: str = 'label'
+COLOR: str = 'color'
+WIDTH: str = 'width'
+NUMBER: str = 'number'
+WALL: str = 'wall'
+SKIP: str = 'skip'
+DENYS: str = 'deny'

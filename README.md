@@ -1,2 +1,0 @@
-# fillomino_graph
-フィルオミノグラフ
