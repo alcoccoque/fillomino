@@ -122,44 +122,7 @@ class PuzzleSolver:
 
     def solve(self):
         self._refresh_state()
-
-        while self.state_changed:
-            self.state_changed = False
-            self._join_groups_if_one_connection()
-            self._fill_group_if_no_other_variants()
-            self._fill_cells_with_one_value()
-
         self._try_fill_empty_cells()
-
-    def _fill_cells_with_one_value(self):
-        for cell in filter(
-            lambda c: self.field_state.get_state(c) == 0,
-            self.field_state.field.get_all_cells(),
-        ):
-            if len(self.possible_values[cell]) == 1:
-                self.field_state.set_state(cell, self.possible_values[cell].pop())
-                self._refresh_state()
-
-    def _join_groups_if_one_connection(self):
-        for group in self.unfilled_groups.values():
-            if (
-                group.get_possible_length() < group.get_value()
-                and len(group.possible_connection_cells) == 1
-            ):
-                self.field_state.set_state(
-                    group.possible_connection_cells[0], group.get_value()
-                )
-                self._refresh_state()
-
-    def _fill_group_if_no_other_variants(self):
-        for group in self.unfilled_groups.values():
-            if (
-                group.get_possible_length() == group.get_value()
-                and not group.possible_connection_cells
-            ):
-                for cell in group.possible_cells:
-                    self.field_state.set_state(cell, group.get_value())
-                    self._refresh_state()
 
     def _refresh_state(self):
         self._find_unfilled_groups()
@@ -287,17 +250,14 @@ class PuzzleSolver:
 
     def _add_possible_value(self, cell, value):
         if value not in self.possible_values[cell]:
-            invalid_values = set()
             for n in self.field_state.field.get_neighbour_cells(cell):
                 n_value = self.field_state.get_state(n)
-                if n_value != 0:
-                    invalid_values.add(n_value + 1)  # Adding adjacent values
-                    invalid_values.add(n_value - 1)
-            if value not in invalid_values:
+                if n_value != 0 and abs(n_value - value) == 1:
+                    break  # Value conflicts with adjacent cell
+            else:
                 self.possible_values[cell].append(value)
 
     def _try_fill_empty_cells(self):
-
         def backtrack():
             if not free_cells:
                 return True
